@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 
 st.set_page_config(
-    page_title="PISI3 - EM",
+    page_title="PISI3 - Grupo 8",
     layout="wide"
 )
 
@@ -12,7 +12,7 @@ def build_page():
     dicionario()
 
 def build_header():
-    text ='<h1>PISI3 - Estom e Matheus</h1>' + \
+    text ='<h1>PISI3 - Grupo 8</h1>' + \
        '<p>Este projeto visa realizar análises utilizando os dados disponibilizados pelo Centro Animal de Austin. '+ \
        'Os dados foram obtidos a partir do conjunto de dados disponível no ' + \
        '<a href="https://www.kaggle.com/datasets/aaronschlegel/austin-animal-center-shelter-intakes-and-outcomes?select=aac_intakes_outcomes.csv" target="_blank">Kaggle</a>.</p>'

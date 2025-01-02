@@ -4,7 +4,6 @@ import plotly.express as px
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 
-# Página de análise dos clusters
 st.markdown('## Análise dos Clusters')
 
 # Função para carregar os dados e realizar a padronização
@@ -12,7 +11,7 @@ st.markdown('## Análise dos Clusters')
 def load_data():
     df = pd.read_csv('data/aac_intakes_outcomes.csv')
 
-    # Dicionário de tradução para tipos de animais
+
     translation_dict_animal = {
         'Dog': 'Cachorro',
         'Cat': 'Gato',
@@ -30,7 +29,7 @@ def load_data():
         'Transfer': 'Transferido'
     }
 
-    # Traduzir os tipos de animais e tipos de saída
+
     df['animal_type'] = df['animal_type'].map(translation_dict_animal)
     df['outcome_type'] = df['outcome_type'].map(translation_dict_outcome)
 
@@ -53,7 +52,7 @@ def apply_kmeans(data, n_clusters):
     df['cluster'] = kmeans_model.fit_predict(data)
     return df
 
-# Slider para selecionar o número de clusters
+
 n_clusters = st.slider('Selecione o número de clusters:', 2, 10, 3)
 
 # Aplicar o KMeans com o número de clusters selecionado
