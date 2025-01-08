@@ -1,16 +1,19 @@
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 import plotly.express as px
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 
+st.title("Análise dos Clusters")
 st.markdown('## Análise dos Clusters')
+st.write("Este gráfico analisa o tempo médio que os animais passam no abrigo, segmentados por cluster.")
 
 # Função para carregar os dados e realizar a padronização
 @st.cache_data
 def load_data():
     df = pd.read_csv('data/aac_intakes_outcomes.csv')
-
 
     translation_dict_animal = {
         'Dog': 'Cachorro',
@@ -28,7 +31,6 @@ def load_data():
         'Return to Owner': 'Retornou ao dono',
         'Transfer': 'Transferido'
     }
-
 
     df['animal_type'] = df['animal_type'].map(translation_dict_animal)
     df['outcome_type'] = df['outcome_type'].map(translation_dict_outcome)
@@ -52,7 +54,6 @@ def apply_kmeans(data, n_clusters):
     df['cluster'] = kmeans_model.fit_predict(data)
     return df
 
-
 n_clusters = st.slider('Selecione o número de clusters:', 2, 10, 3)
 
 # Aplicar o KMeans com o número de clusters selecionado
@@ -66,18 +67,18 @@ fig_animal_dist = px.bar(animal_dist, x='cluster', y='counts', color='animal_typ
                          labels={'cluster': 'Cluster', 'counts': 'Contagem', 'animal_type': 'Tipo de Animal'})
 st.plotly_chart(fig_animal_dist)
 
-# Gráfico 2: Idade Média dos Animais por Cluster
-st.subheader("Idade Média dos Animais por Cluster")
-age_dist = df.groupby('cluster')['age_upon_intake_(years)'].mean().reset_index()
-fig_age_dist = px.bar(age_dist, x='cluster', y='age_upon_intake_(years)', 
-                      title='Idade Média dos Animais por Cluster',
-                      labels={'cluster': 'Cluster', 'age_upon_intake_(years)': 'Idade Média (Anos)'})
-st.plotly_chart(fig_age_dist)
-
-# Gráfico 3: Distribuição dos Tipos de Saída por Cluster
+# Gráfico 2: Distribuição dos Tipos de Saída por Cluster
 st.subheader("Distribuição dos Tipos de Saída por Cluster")
 outcome_dist = df.groupby(['cluster', 'outcome_type']).size().reset_index(name='counts')
 fig_outcome_dist = px.bar(outcome_dist, x='cluster', y='counts', color='outcome_type', 
                           title='Distribuição dos Tipos de Saída por Cluster',
                           labels={'cluster': 'Cluster', 'counts': 'Contagem', 'outcome_type': 'Tipo de Saída'})
 st.plotly_chart(fig_outcome_dist)
+
+# Gráfico 3: Tempo Médio no Abrigo por Cluster
+st.subheader("Tempo Médio no Abrigo por Cluster")
+time_in_shelter_dist = df.groupby('cluster')['time_in_shelter_days'].mean().reset_index()
+fig_time_dist = px.bar(time_in_shelter_dist, x='cluster', y='time_in_shelter_days', 
+                      title='Tempo Médio no Abrigo por Cluster',
+                      labels={'cluster': 'Cluster', 'time_in_shelter_days': 'Tempo Médio no Abrigo (dias)'})
+st.plotly_chart(fig_time_dist)
