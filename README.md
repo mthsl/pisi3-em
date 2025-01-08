@@ -1,4 +1,4 @@
-# PISI3 - EM
+# PISI3 - Grupo 8
 
 por: Estom Paulino e Matheus Lima.
 
